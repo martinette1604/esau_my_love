@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canciones que me hacen sentir cerca de ti 💚</title>
+    <style>
+        :root {
+            --bg-black: #0a0a0a;
+            --card-dark: #121212;
+            --card-hover: #181818;
+            --spotify-green: #1DB954;
+            --spotify-green-glow: rgba(29, 185, 84, 0.25);
+            --text-white: #FFFFFF;
+            --text-gray: #B3B3B3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Fondo sutil con degradado verde Spotify */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(180deg, rgba(29, 185, 84, 0.28) 0%, rgba(10, 10, 10, 0) 100%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Corazones flotantes de fondo */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            font-size: 1.5rem;
+            opacity: 0.35;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.4;
+            }
+            80% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(25deg);
+                opacity: 0;
+            }
+        }
+
+        /* Encabezado tipo Playlist */
+        header {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 60px 20px 40px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(29, 185, 84, 0.15);
+            color: var(--spotify-green);
+            border: 1px solid var(--spotify-green);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 15px;
+        }
+
+        h1 span {
+            color: var(--spotify-green);
+        }
+
+        .subtitle {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Contenedor principal vertical */
+        .playlist-container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Tarjeta de cada canción (Reproductor + Texto) */
+        .song-card {
+            background-color: var(--card-dark);
+            border: 1px solid #242424;
+            border-radius: 16px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 24px;
+            align-items: center;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .song-card:hover {
+            background-color: var(--card-hover);
+            border-color: var(--spotify-green);
+            box-shadow: 0 10px 30px var(--spotify-green-glow);
+            transform: translateY(-3px);
+        }
+
+        .spotify-embed {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .spotify-embed iframe {
+            display: block;
+            border-radius: 12px;
+        }
+
+        .dedication-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .song-number {
+            color: var(--spotify-green);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dedication-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-white);
+        }
+
+        .dedication-text {
+            color: var(--text-gray);
+            font-size: 1rem;
+            line-height: 1.65;
+            white-space: pre-line; /* Respeta saltos de línea si escribes párrafos */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive para celulares */
+        @media (max-width: 768px) {
+            .song-card {
+                grid-template-columns: 1fr;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient"></div>
+    <div class="hearts-bg" id="heartsContainer"></div>
+
+    <header>
+        <div class="badge">💚 Playlist Exclusiva 🖤</div>
+        <h1>Canciones que me hacen sentir <span>cerca de ti</span></h1>
+        <p class="subtitle">Página hecha especialmente para <strong>Esaú</strong>. Cada canción aquí tiene un pedacito de lo que siento por ti 🖤💚</p>
+    </header>
+
+    <!-- Aquí se inyectan las canciones automáticamente -->
+    <main class="playlist-container" id="playlistContainer"></main>
+
+    <footer>
+        Hecho con todo mi amor para Esaú 💚🖤
+    </footer>
+
+    <script>
+        // =========================================================================
+        // 🎵 LISTA DE CANCIONES (AQUÍ ES DONDE VAS A METER TUS DATOS)
+        // =========================================================================
+        // Instrucciones rápidas:
+        // 1. En Spotify dale a "Compartir -> Copiar enlace de la canción".
+        // 2. El enlace se ve así: https://open.spotify.com/track/4uUG5RXrOk84mYEfFvj3cK?si=...
+        // 3. Copia SOLO el código entre "/track/" y "?si=" (ej. "4uUG5RXrOk84mYEfFvj3cK").
+        // 4. Pégalo en `spotifyTrackId` y escribe tu texto en `mensaje`.
+        // =========================================================================
+
+        const canciones = [
+            {
+                spotifyTrackId: "3wlLknnMtD8yZ0pCtCeeK4", //  - Angel Baby - Troye Sivan
+                tituloNota: "Cuando pienso en nuestra paz 💚",
+                mensaje: "Hola soy yo de nuevo tonto jajajaj se me acabo la pila y use mi horario laboral para ponerte canciones top para que agarres cultura😁😁, esta es la primera me gusta mucho troye sivan es un cantante super jochis jasjajsajsaj esta cancion habla sobre lit como eres para mi muy divino al grado de llamarte mi angel, siendo que estando en un punto raro y confuso apareciste te amo escuchala muak."
+            },
+            {
+                spotifyTrackId: "5XeFesFbtLpXzIVDNQP22n", // I Wanna Be Yours - Arctic Monkeys
+                tituloNota: "Nuestra conexión 🖤",
+                mensaje: "Esta esta mas quemada que mis piernas por el escape, anyway me gusta tambien porque yo quiero ser todo lo que necesites porque quiero ser tuyo te amo y lit la letra esta cool pero con versos raros jaja que es eso de que si te gusta el cafe caliente dejame ser tu cafetera, jaja si te gusta el pan dejame ser tu panadero 😹😹😹, tu catpanadero"
+            },
+            {
+                spotifyTrackId: "2QjOHCTQ1Jl3zawyYOpxh6", // Sweater Weather - The Neighbourhood
+                tituloNota: "Un clásico que siempre me lleva a ti 💚🖤",
+                mensaje: "Esta ya la conoces jajaj por tus manos en los ollos de mi sueter me encanta nose porque me recuerda cuando me abrazas cuando vamos en la motico y me vas manoseando que padre, mas momentos asi me encantas mucho como esta cancion toca mi cuello y tocare el tuyo"
+            },
+            {
+                spotifyTrackId: "6PUIzlqotEmPuBfjbwYWOB", // Say Yes To Heaven - Lana Del Rey
+                tituloNota: "Siempre te diría que sí 🖤💚",
+                mensaje: "Esta es de mis fav porque es de mi poderosisima lana del rey, el sentimiento es fuerte y apartir de ya!, cuando la escucho te vienes a mi mente, tengo mis ojos sobre ti cachorro, la verdad esta muy linda me da mucha paz y es una canacion tan bella como tu"
+            },
+            {
+                spotifyTrackId: "3ONxFMHXamgGmYLPHcwECM", // Ser Parte - Siddhartha
+                tituloNota: "Quiero ser el calor para despertarte😝😝😝 💚🖤",
+                mensaje: "Ya la habia escuchado pero a ti te gusta y estaba buscando canciones y dije que no recordaba que estuviera tan bonita la cancion, talvez porque la escuchaba pensando en ti o por el hecho de que parte de lo que dice son palabras muy bonitas que te diria, porque te las mereces por bonito, por amable y sobre todo por tener un gran corazon "
+            }
+        ];
+
+        // =========================================================================
+        // ⚙️ MOTOR DE RENDERIZADO (NO NECESITAS MOVERLE A MENOS QUE QUIERAS)
+        // =========================================================================
+        const container = document.getElementById("playlistContainer");
+
+        canciones.forEach((cancion, index) => {
+            const card = document.createElement("article");
+            card.className = "song-card";
+
+            card.innerHTML = `
+                <div class="spotify-embed">
+                    <iframe 
+                        src="https://open.spotify.com/embed/track/${cancion.spotifyTrackId}?utm_source=generator&theme=0" 
+                        width="100%" 
+                        height="152" 
+                        frameBorder="0" 
+                        allowfullscreen="" 
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+                <div class="dedication-box">
+                    <div class="song-number">
+                        <span>🖤 PISTA #${index + 1}</span>
+                        <span>•</span>
+                        <span>💚 PARA ESAÚ</span>
+                    </div>
+                    <h2 class="dedication-title">${cancion.tituloNota}</h2>
+                    <p class="dedication-text">${cancion.mensaje}</p>
+                </div>
+            `;
+
+            container.appendChild(card);
+        });
+
+        // Generador de corazones negros y verdes flotando en el fondo
+        const heartsContainer = document.getElementById("heartsContainer");
+        const heartIcons = ["💚", "🖤"];
+
+        for (let i = 0; i < 18; i++) {
+            const heart = document.createElement("div");
+            heart.className = "floating-heart";
+            heart.textContent = heartIcons[i % 2];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 10 + 10) + "s";
+            heart.style.animationDelay = (Math.random() * 10) + "s";
+            heart.style.fontSize = (Math.random() * 1 + 1) + "rem";
+            heartsContainer.appendChild(heart);
+        }
+    </script>
+</body>
+</html>
